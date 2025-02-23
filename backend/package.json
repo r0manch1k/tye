@@ -26,6 +26,6 @@
   },
   "dependencies": {
     "express": "^4.21.2",
-    "tsconfig-paths": "^4.2.0"
+    "mongodb": "^6.13.0"
   }
 }

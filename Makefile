@@ -6,7 +6,7 @@ rm-volumes:
 	docker volume prune -a -f
 
 rm-images:
-	$(DOCKER_COMPOSE_DEV) down -rmi
+	$(DOCKER_COMPOSE_DEV) down --rmi all
 	docker image prune -a -f
 
 rm-containers:
@@ -28,8 +28,14 @@ build-dev:
 up-dev:
 	$(DOCKER_COMPOSE_DEV) up -d
 
+up-service-dev:
+	$(DOCKER_COMPOSE_DEV) up -d --no-deps --build $(SERVICE)
+
 up-logs-dev:
 	$(DOCKER_COMPOSE_DEV) up
+
+up-logs-service-dev:
+	$(DOCKER_COMPOSE_DEV) up --no-deps --build $(SERVICE)
 
 down-dev:
 	$(DOCKER_COMPOSE_DEV) down

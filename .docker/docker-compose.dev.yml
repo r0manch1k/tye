@@ -20,11 +20,18 @@ services:
       dockerfile: ./.docker/dev/Dockerfile.mongo.dev
     restart: unless-stopped
     volumes:
-      - v-mongo:/data/db
+      - v-mongo-data:/data/db
+      - v-mongo-config:/data/configdb
     ports:
       - "27017:27017"
     env_file:
       - ./dev/conf/.env.dev
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 1m30s
+      timeout: 30s
+      retries: 5
+      start_period: 30s
 
   mongo-express:
     container_name: tye_mongo-express
@@ -34,6 +41,9 @@ services:
       - "8081:8081"
     env_file:
       - ./dev/conf/.env.dev
+    depends_on:
+      mongo:
+        condition: service_healthy
 
   backend:
     container_name: tye_backend
@@ -48,6 +58,10 @@ services:
       - "8000:3000"
     env_file:
       - ./dev/conf/.env.dev
+    depends_on:
+      mongo:
+        condition: service_healthy
 
 volumes:
-  v-mongo:
+  v-mongo-data:
+  v-mongo-config:
