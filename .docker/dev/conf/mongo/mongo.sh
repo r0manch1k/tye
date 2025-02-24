@@ -2,8 +2,8 @@
 
 set -e
 
-mongosh "$MONGO_INITDB_DATABASE" <<-EOJS
-  db = db.getSiblingDB("$MONGO_INITDB_ROOT_USERNAME");
+mongosh <<-EOJS
+  db = db.getSiblingDB("admin");
 
   db.auth("$MONGO_INITDB_ROOT_USERNAME", "$MONGO_INITDB_ROOT_PASSWORD");
 

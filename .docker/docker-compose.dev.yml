@@ -20,8 +20,7 @@ services:
       dockerfile: ./.docker/dev/Dockerfile.mongo.dev
     restart: unless-stopped
     volumes:
-      - v-mongo-data:/data/db
-      - v-mongo-config:/data/configdb
+      - v-mongo:/data/db
     ports:
       - "27017:27017"
     env_file:
@@ -63,5 +62,4 @@ services:
         condition: service_healthy
 
 volumes:
-  v-mongo-data:
-  v-mongo-config:
+  v-mongo:

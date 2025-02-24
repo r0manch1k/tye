@@ -46,6 +46,21 @@ app.get("/", async (req: Request, res: Response) => {
   }
 });
 
+app.get("/highscores", async (req: Request, res: Response) => {
+  try {
+    await client.connect();
+    const database = client.db(db);
+    const col = database.collection(collection);
+    const documents = await col.find({}).toArray();
+    res.json(documents);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Error retrieving documents");
+  } finally {
+    await client.close();
+  }
+});
+
 app.listen(port, () => {
   console.log(`[server]: Server is running at http://localhost:${port}`);
 });
