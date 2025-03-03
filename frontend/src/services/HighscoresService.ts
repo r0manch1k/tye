@@ -10,8 +10,9 @@ class HighscoresService {
   async getHighscores(): Promise<HighscoresTableModel> {
     let data: HighscoresTableModel;
     return await api
-      .get<HighscoresTableModel>("/highscores")
-      .then((response: AxiosResponse) => {
+      .get<HighscoresTableModel>("/highscores/")
+      .then((response: AxiosResponse<HighscoresTableModel>) => {
+        console.log("Highscores fetched: ", response);
         data = response.data;
         return Promise.resolve(data);
       })

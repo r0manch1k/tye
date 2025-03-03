@@ -19,14 +19,21 @@
 import { ref } from "vue";
 import type { HighscoresTableModel } from "@models/HighscoresModel";
 import HighscoresService from "@services/HighscoresService";
+import type { AxiosError } from "axios";
 
 const highscoresTable = ref<HighscoresTableModel>();
 
 async function fetchHighscoresTable() {
-  console.log("Fetching highscores table...");
-  await HighscoresService.getHighscores().then((data: HighscoresTableModel) => {
-    highscoresTable.value = data;
-  });
+  await HighscoresService.getHighscores()
+    .then((data: HighscoresTableModel) => {
+      highscoresTable.value = data;
+    })
+    .catch((error: Error | AxiosError) => {
+      console.error(error);
+    })
+    .finally(() => {
+      console.log("That's all!");
+    });
 }
 </script>
 
