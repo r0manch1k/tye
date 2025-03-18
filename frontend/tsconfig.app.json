@@ -2,13 +2,26 @@
   "extends": "@vue/tsconfig/tsconfig.dom.json",
   "compilerOptions": {
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
+    "composite": true,
+    "noEmit": true,
 
     /* Linting */
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true
+    "noUncheckedSideEffectImports": true,
+
+    /* Required */
+    "types": ["node"],
+    "baseUrl": "./src",
+    "paths": {
+      "@services/*": ["./services/*"],
+      "@components/*": ["./components/*"],
+      "@views/*": ["./views/*"],
+      "@store/*": ["./store/*"],
+      "@models/*": ["./models/*"]
+    }
   },
   "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue"]
 }

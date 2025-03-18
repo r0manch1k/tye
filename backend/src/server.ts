@@ -1,15 +1,29 @@
-import express, { Express, Request, Response } from "express";
-// import dotenv from "dotenv";
+import cors from "cors";
+import express, { Express } from "express";
+import { MongoClient, ServerApiVersion } from "mongodb";
+import bodyParser from "body-parser";
 
-// dotenv.config();
+import routes from "./routes";
 
 const app: Express = express();
-const port = process.env.PORT || 3000;
+const port: number = parseInt(process.env.PORT) || 3000;
+const uri = process.env.MONGO_URI;
 
-app.get("/", (req: Request, res: Response) => {
-  res.send("Express + TypeScript Server");
+const client = new MongoClient(uri, {
+  serverApi: {
+    version: ServerApiVersion.v1,
+    strict: true,
+    deprecationErrors: true,
+  },
 });
 
-app.listen(port, () => {
-  console.log(`[server]: Server is running at http://localhost:${port}`);
+const db = client.db(process.env.MONGO_INITDB_DATABASE);
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cors({ origin: "*" }));
+
+routes(app, db);
+
+app.listen(port, "0.0.0.0", () => {
+  console.log("Server is running on port", port);
 });

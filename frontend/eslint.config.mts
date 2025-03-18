@@ -14,7 +14,7 @@ export default [
   eslint.configs.recommended,
   ...tsEslint.configs.recommended,
   ...pluginVue.configs["flat/recommended"],
-  { languageOptions: { globals: globals.browser } },
+  { languageOptions: { globals: { ...globals.browser, ...globals.node } } },
   { files: ["**/*.{js,cjs,mjs}"] },
   {
     files: ["**/*.{mts,ts}"],
