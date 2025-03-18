@@ -1,7 +1,7 @@
 import type {
   HighscoresPlayerModel,
   HighscoresTableModel,
-} from "@models/HighscoresModel";
+} from "@models/highscores";
 
 import api from "./api";
 import { AxiosError, type AxiosResponse } from "axios";

@@ -1,6 +1,6 @@
-import type PlayerModel from "./PlayerModel";
+import type Player from "./player";
 
-export interface HighscoresPlayerModel extends PlayerModel {
+export interface HighscoresPlayerModel extends Player {
   score: number;
 }
 
