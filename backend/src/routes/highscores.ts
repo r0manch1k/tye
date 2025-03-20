@@ -34,7 +34,11 @@ export default function highscoresRoutes(app: Application, db: Db) {
         res.status(400).send("MISSING_PARAMETERS");
         return;
       }
-      if (typeof req.body.username !== "string") {
+      const regex = /^[a-zA-Z0-9]+$/;
+      if (
+        typeof req.body.username !== "string" ||
+        !regex.test(req.body.username)
+      ) {
         res.status(400).send("INVALID_USERNAME");
         return;
       }
@@ -48,6 +52,7 @@ export default function highscoresRoutes(app: Application, db: Db) {
       const player: HighscoresPlayerModel = {
         _id: new ObjectId(),
         username: req.body.username,
+        createdAt: new Date().toISOString(),
         score: parseInt(req.body.score as string),
       };
       let isRanked: boolean;
@@ -71,9 +76,14 @@ export default function highscoresRoutes(app: Application, db: Db) {
         .then(() => {
           res.status(201).send("OK");
         })
-        .catch((error: MongoError) => {
-          if (error.code === 11000) {
-            res.status(409).send("DUPLICATE_USERNAME");
+        .catch((error: MongoError | Error) => {
+          if (error instanceof MongoError) {
+            if (error.code === 11000) {
+              res.status(409).send("DUPLICATE_USERNAME");
+              return;
+            }
+          } else if (error instanceof Error) {
+            res.status(409).send(error.message);
             return;
           }
           res.status(500).send(error.code + error.message);
