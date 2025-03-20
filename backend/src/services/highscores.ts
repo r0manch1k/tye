@@ -15,6 +15,10 @@ export class HighscoresService {
     process.env.HIGHSCORES_TABLE_SIZE,
     10,
   );
+  private usernameMaxLength: number = parseInt(
+    process.env.USERNAME_MAX_LENGTH,
+    10,
+  );
 
   constructor(db: Db) {
     this.db = db;
@@ -28,6 +32,7 @@ export class HighscoresService {
       .collection<HighscoresPlayerModel>(this.collection)
       .find()
       .sort({ score: -1 })
+      .sort({ createdAt: 1 })
       .limit(this.highscoresTableSize)
       .toArray()
       .then((document: HighscoresPlayerModel[]) => {
@@ -66,10 +71,14 @@ export class HighscoresService {
 
   public async insertPlayerToHighscores(
     player: HighscoresPlayerModel,
-  ): Promise<void> {
+  ): Promise<void | MongoError | Error> {
     const collection = this.db.collection<OptionalId<HighscoresPlayerModel>>(
       this.collection,
     );
+
+    if (player.username.length > this.usernameMaxLength) {
+      return Promise.reject(new Error("INVALID_USERNAME"));
+    }
 
     await collection.insertOne(player).catch((error: MongoError) => {
       return Promise.reject(error);
@@ -78,7 +87,7 @@ export class HighscoresService {
     const metadataService = new MetadataService(this.db);
 
     await metadataService
-      .updateHighscoresTableUpdatedAt()
+      .updateHighscoresTableUpdatedAt(player.createdAt)
       .catch((error: MongoError) => {
         return Promise.reject(error);
       });

@@ -62,20 +62,19 @@ export class MetadataService {
       });
   }
 
-  public async updateHighscoresTableUpdatedAt(): Promise<void> {
+  public async updateHighscoresTableUpdatedAt(
+    createdAt: string,
+  ): Promise<void> {
+    const updateFilter: StrictUpdateFilter<MetadataModel> = {
+      $set: {
+        highscoresTableUpdatedAt: createdAt,
+      },
+    };
     return await this.db
       .collection<MetadataModel>(this.collection)
-      .updateOne(
-        { _id: this.collection },
-        {
-          $set: {
-            highscoresTableUpdatedAt: new Date().toISOString(),
-          },
-        },
-        {
-          upsert: true,
-        },
-      )
+      .updateOne({ _id: this.collection }, updateFilter, {
+        upsert: true,
+      })
       .then(() => {
         return Promise.resolve();
       })
