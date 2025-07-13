@@ -1,6 +1,6 @@
 services:
   frontend:
-    container_name: tye_frontend
+    container_name: tye-frontend
     build:
       context: ../.
       dockerfile: ./.docker/dev/Dockerfile.frontend.dev
@@ -11,20 +11,21 @@ services:
     ports:
       - "8080:5173"
     env_file:
-      - ./dev/conf/.env.dev
+      - ./dev/conf/.env.dev.local
 
   mongo:
-    container_name: tye_mongo
+    container_name: tye-mongo
     build:
       context: ../.
       dockerfile: ./.docker/dev/Dockerfile.mongo.dev
     restart: unless-stopped
     volumes:
       - v-mongo:/data/db
+      - ../logs/mongo:/var/log/mongodb
     ports:
       - "27017:27017"
     env_file:
-      - ./dev/conf/.env.dev
+      - ./dev/conf/.env.dev.local
     healthcheck:
       test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
       interval: 1m30s
@@ -33,19 +34,19 @@ services:
       start_period: 30s
 
   mongo-express:
-    container_name: tye_mongo-express
+    container_name: tye-mongo-express
     image: mongo-express:latest
     restart: unless-stopped
     ports:
       - "8081:8081"
     env_file:
-      - ./dev/conf/.env.dev
+      - ./dev/conf/.env.dev.local
     depends_on:
       mongo:
         condition: service_healthy
 
   backend:
-    container_name: tye_backend
+    container_name: tye-backend
     build:
       context: ../.
       dockerfile: ./.docker/dev/Dockerfile.backend.dev
@@ -56,7 +57,7 @@ services:
     ports:
       - "8000:3000"
     env_file:
-      - ./dev/conf/.env.dev
+      - ./dev/conf/.env.dev.local
     depends_on:
       mongo:
         condition: service_healthy

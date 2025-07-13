@@ -1,3 +1,4 @@
+# Change to particular version
 FROM mongo:latest
 
 COPY /.docker/dev/conf/mongo/mongo.conf /etc/mongo.conf

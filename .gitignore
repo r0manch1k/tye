@@ -11,8 +11,8 @@ dist
 dist-ssr
 *.local
 
-.env.*
-*.env
+.env.dev.local
+.env.prod.local
 
 .vscode
 .idea

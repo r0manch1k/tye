@@ -1,34 +1,17 @@
 <template>
-  <div>
-    <button @click="fetchHighscoresTable">Fetch Mongo Collections</button>s
-    <ul v-if="highscoresTable?.players">
-      <li v-for="player in highscoresTable.players" :key="player._id">
-        {{ player.username }}: {{ player.score }}
-      </li>
-    </ul>
-  </div>
+  <Transition>
+    <Menu v-if="gameStateStore.gameScene === GameSceneEnum.Menu" />
+    <Game v-else-if="gameStateStore.gameScene === GameSceneEnum.Game" />
+  </Transition>
 </template>
 
-<script setup lang="ts">
-import { ref } from "vue";
-import type { HighscoresTableModel } from "@models/HighscoresModel";
-import HighscoresService from "@services/HighscoresService";
-import type { AxiosError } from "axios";
+<script lang="ts" setup>
+import Menu from "@components/Menu.vue";
+import Game from "@components/Game.vue";
+import { useGameStateStore } from "@stores/state";
+import GameSceneEnum from "@enums/GameSceneEnum";
 
-const highscoresTable = ref<HighscoresTableModel>();
-
-async function fetchHighscoresTable() {
-  await HighscoresService.getHighscores()
-    .then((data: HighscoresTableModel) => {
-      highscoresTable.value = data;
-    })
-    .catch((error: Error | AxiosError) => {
-      console.error(error);
-    })
-    .finally(() => {
-      console.log("That's all!");
-    });
-}
+const gameStateStore = useGameStateStore();
 </script>
 
-<style scoped></style>
+<style></style>

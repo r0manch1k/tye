@@ -10,13 +10,13 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      "@services": fileURLToPath(new URL("./src/services", import.meta.url)),
+      "@components": fileURLToPath(new URL("./src/components", import.meta.url)),
+      "@enums": fileURLToPath(new URL("./src/enums", import.meta.url)),
       "@models": fileURLToPath(new URL("./src/models", import.meta.url)),
-      "@components": fileURLToPath(
-        new URL("./src/components", import.meta.url),
-      ),
+      "@services": fileURLToPath(new URL("./src/services", import.meta.url)),
+      "@stores": fileURLToPath(new URL("./src/stores", import.meta.url)),
+      "@three": fileURLToPath(new URL("./src/three", import.meta.url)),
       "@views": fileURLToPath(new URL("./src/views", import.meta.url)),
-      "@store": fileURLToPath(new URL("./src/store", import.meta.url)),
     },
   },
   server: {

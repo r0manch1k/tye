@@ -16,11 +16,13 @@
     "types": ["node"],
     "baseUrl": "./src",
     "paths": {
-      "@services/*": ["./services/*"],
       "@components/*": ["./components/*"],
-      "@views/*": ["./views/*"],
-      "@store/*": ["./store/*"],
-      "@models/*": ["./models/*"]
+      "@enums/*": ["./enums/*"],
+      "@models/*": ["./models/*"],
+      "@services/*": ["./services/*"],
+      "@stores/*": ["./stores/*"],
+      "@three/*": ["./three/*"],
+      "@views/*": ["./views/*"]
     }
   },
   "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue"]
